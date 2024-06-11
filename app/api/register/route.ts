@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
     const result = await pool.query('INSERT INTO users (username, ip_address) VALUES ($1, $2)', [username, ipAddress]);
     return NextResponse.json({ message: 'Kullanıcı kaydedildi.' }, { status: 201 });
   } catch (err) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    const error = err as Error;
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

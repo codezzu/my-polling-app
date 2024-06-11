@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ message: 'Oy kullanıldı.' }, { status: 201 });
   } catch (err) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    const error = err as Error;
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
