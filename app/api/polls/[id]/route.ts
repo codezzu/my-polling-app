@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
     const votesResult = await pool.query('SELECT * FROM votes WHERE option_id IN (SELECT id FROM options WHERE poll_id = $1)', [id]);
 
     if (pollResult.rows.length === 0) {
-      return NextResponse.json({ error: 'Anket bulunamadı. Anket yok' }, { status: 404 });
+      return NextResponse.json({ error: 'Anket bulunamadı.' }, { status: 404 });
     }
 
     const poll = pollResult.rows[0];
