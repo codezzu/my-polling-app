@@ -9,12 +9,20 @@ const pool = new Pool({
 });
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const id = searchParams.get('id');
+  const url = new URL(request.url);
+  const id = url.pathname.split('/').pop(); // Get the poll ID from the URL
 
-  if (!id) {
-    return NextResponse.json({ error: 'ID not provided.' }, { status: 400 });
+  if (!id || id === 'polls') { // if the ID is not provided or it's the /polls endpoint
+    try {
+      const result = await pool.query('SELECT * FROM polls');
+      return NextResponse.json(result.rows, { status: 200 });
+    } catch (err) {
+      const error = err as Error;
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
   }
+
+  console.log('Fetching poll with id:', id);  // Logging ekledik
 
   try {
     const pollResult = await pool.query('SELECT * FROM polls WHERE id = $1', [id]);
@@ -22,16 +30,21 @@ export async function GET(request: NextRequest) {
     const votesResult = await pool.query('SELECT * FROM votes WHERE option_id IN (SELECT id FROM options WHERE poll_id = $1)', [id]);
 
     if (pollResult.rows.length === 0) {
-      return NextResponse.json({ error: 'Anket bulunamadı.' }, { status: 404 });
+      console.error('Poll not found for id:', id);  // Logging ekledik
+      return NextResponse.json({ error: 'Poll not found' }, { status: 404 });
     }
 
     const poll = pollResult.rows[0];
     const options = optionsResult.rows;
     const votes = votesResult.rows;
 
+    console.log('Poll fetched successfully:', { poll, options, votes });  // Logging ekledik
+
     return NextResponse.json({ poll, options, votes }, { status: 200 });
   } catch (err) {
     const error = err as Error;
+    console.error('Error fetching poll:', error.message);  // Logging ekledik
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
