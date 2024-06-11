@@ -3,8 +3,16 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+interface Vote {
+  username: string;
+  ip_address: string;
+  option_text: string;
+  poll_question: string;
+  created_at: string;
+}
+
 export default function AdminVotes() {
-  const [votes, setVotes] = useState([]);
+  const [votes, setVotes] = useState<Vote[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
