@@ -6,12 +6,26 @@ import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
 
+interface Poll {
+  id: string;
+  question: string;
+}
+
+interface Option {
+  id: string;
+  text: string;
+}
+
+interface Vote {
+  option_id: string;
+}
+
 export default function PollDetail() {
   const params = useParams();
   const { id } = params;
-  const [poll, setPoll] = useState(null);
-  const [options, setOptions] = useState([]);
-  const [votes, setVotes] = useState([]);
+  const [poll, setPoll] = useState<Poll | null>(null);
+  const [options, setOptions] = useState<Option[]>([]);
+  const [votes, setVotes] = useState<Vote[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [hasVoted, setHasVoted] = useState(false);
 
@@ -37,7 +51,7 @@ export default function PollDetail() {
     }
   }, [id]);
 
-  const handleVote = async (optionId) => {
+  const handleVote = async (optionId: string) => {
     try {
       const response = await axios.post('/api/votes', { optionId });
       if (response.status === 201) {
