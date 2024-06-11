@@ -9,8 +9,8 @@ const pool = new Pool({
 });
 
 export async function GET(request: NextRequest) {
-  const url = new URL(request.url);
-  const id = url.pathname.split('/').pop(); // Get the poll ID from the URL
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
 
   if (!id) {
     return NextResponse.json({ error: 'ID not provided.' }, { status: 400 });
