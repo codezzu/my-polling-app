@@ -20,8 +20,10 @@ export async function POST(request: NextRequest) {
     await Promise.all(optionQueries);
 
     return NextResponse.json({ pollId }, { status: 201 });
+    
   } catch (err) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    const error = err as Error;
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
@@ -30,6 +32,7 @@ export async function GET(request: NextRequest) {
     const result = await pool.query('SELECT * FROM polls');
     return NextResponse.json(result.rows, { status: 200 });
   } catch (err) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    const error = err as Error;
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
