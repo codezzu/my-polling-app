@@ -6,6 +6,9 @@ require('dotenv').config();
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 const app = express();
@@ -66,6 +69,7 @@ app.get('/api/test-db', async (req, res) => {
   }
 });
 
-app.listen(3001, () => {
-  console.log('Server running on http://localhost:3001');
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
