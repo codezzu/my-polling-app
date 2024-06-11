@@ -5,7 +5,7 @@ import Link from 'next/link';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Polling App',
+  title: 'Sosyal Turnuva',
   description: 'Create and participate in polls',
 };
 
@@ -20,7 +20,7 @@ export default function RootLayout({
         <nav className="bg-gray-800 p-4">
           <div className="container mx-auto flex justify-between">
             <Link href="/" className="text-white font-bold text-xl">
-              Polling App
+              Sosyal Turnuva
             </Link>
             <div className="flex space-x-4">
               <Link href="/register" className="text-white">
