@@ -36,12 +36,13 @@ export default function PollList() {
       <div className="max-w-3xl w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <h1 className="text-2xl font-bold mb-4">Anketler</h1>
         {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
-        <ul className="mb-4">
+        <ul>
           {polls.map((poll) => (
-            <li key={poll.id} className="mb-2">
-              <Link href={`/poll/${poll.id}`}>
-                <a className="text-blue-500 hover:underline">{poll.question}</a>
+            <li key={poll.id} className="mb-4">
+              <Link href={`/poll/${poll.id}`} className="text-xl font-bold text-blue-500 hover:underline">
+                {poll.question}
               </Link>
+              <p className="text-gray-600">ID: {poll.id}</p>
             </li>
           ))}
         </ul>
@@ -49,3 +50,4 @@ export default function PollList() {
     </div>
   );
 }
+
