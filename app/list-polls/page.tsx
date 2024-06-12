@@ -16,7 +16,7 @@ export default function PollList() {
   useEffect(() => {
     const fetchPolls = async () => {
       try {
-        const response = await axios.get('/api/polls/${id}');
+        const response = await axios.get('/api/polls');
         if (response.status === 200) {
           setPolls(response.data);
         } else {

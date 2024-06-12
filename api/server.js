@@ -9,8 +9,13 @@ const pool = new Pool({
 });
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  methods: 'GET,POST,PUT,DELETE', // izin verilen HTTP metodlarını belirtin
+  allowedHeaders: 'Content-Type,Authorization' // izin verilen header'ları belirtin
+}));
+
 app.use(bodyParser.json());
+
 
 // Anket oluşturma
 app.post('/api/polls', async (req, res) => {
