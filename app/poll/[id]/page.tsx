@@ -108,7 +108,7 @@ export default function PollDetail() {
             </div>
           </>
         ) : (
-          <p>Anket bulunamadı.</p>
+          <p>Anket yok knk.</p>
         )}
       </div>
     </div>

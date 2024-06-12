@@ -9,13 +9,8 @@ const pool = new Pool({
 });
 
 const app = express();
-app.use(cors({
-  methods: 'GET,POST,PUT,DELETE', // izin verilen HTTP metodlarını belirtin
-  allowedHeaders: 'Content-Type,Authorization' // izin verilen header'ları belirtin
-}));
-
+app.use(cors());
 app.use(bodyParser.json());
-
 
 // Anket oluşturma
 app.post('/api/polls', async (req, res) => {
@@ -67,6 +62,7 @@ app.get('/api/test-db', async (req, res) => {
     const result = await pool.query('SELECT NOW()');
     res.status(200).json({ time: result.rows[0] });
   } catch (err) {
+    console.error(`Error testing DB connection: ${err.message}`);
     res.status(500).json({ error: err.message });
   }
 });
