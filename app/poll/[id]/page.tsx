@@ -27,10 +27,11 @@ export default function PollDetail() {
   const [options, setOptions] = useState<Option[]>([]);
   const [votes, setVotes] = useState<Vote[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
-  const [hasVoted, setHasVoted] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPoll = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(`/api/polls/${id}`);
         if (response.status === 200) {
@@ -43,6 +44,8 @@ export default function PollDetail() {
       } catch (error) {
         console.error(error);
         setErrorMessage('Anket yüklenirken bir hata oluştu.');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -55,7 +58,6 @@ export default function PollDetail() {
     try {
       const response = await axios.post('/api/votes', { optionId });
       if (response.status === 201) {
-        setHasVoted(true);
         const updatedVotes = await axios.get(`/api/polls/${id}`);
         setVotes(updatedVotes.data.votes);
       } else {
@@ -85,8 +87,11 @@ export default function PollDetail() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 py-6">
       <div className="max-w-3xl w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
-        {poll ? (
+        {loading ? (
+          <p>Yükleniyor...</p>
+        ) : errorMessage ? (
+          <p className="text-red-500 text-sm">{errorMessage}</p>
+        ) : poll ? (
           <>
             <h1 className="text-2xl font-bold mb-4">{poll.question}</h1>
             <ul className="mb-4">
@@ -95,20 +100,18 @@ export default function PollDetail() {
                   <button
                     onClick={() => handleVote(option.id)}
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    disabled={hasVoted}
                   >
                     {option.text}
                   </button>
                 </li>
               ))}
             </ul>
-            {hasVoted && <p className="text-green-500">Bu anket için oy kullandınız.</p>}
             <div className="mt-8">
               <Bar data={chartData} />
             </div>
           </>
         ) : (
-          <p>Poll not found.</p>
+          <p>Anket bulunamadı.</p>
         )}
       </div>
     </div>
