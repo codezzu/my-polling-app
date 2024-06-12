@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
@@ -21,8 +21,8 @@ interface Vote {
 }
 
 export default function PollDetail() {
-  const router = useRouter();
-  const { id } = router.query;
+  const params = useParams();
+  const id = params?.id; // Destructure id from params
   const [poll, setPoll] = useState<Poll | null>(null);
   const [options, setOptions] = useState<Option[]>([]);
   const [votes, setVotes] = useState<Vote[]>([]);
