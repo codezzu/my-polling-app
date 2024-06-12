@@ -1,11 +1,16 @@
-
-
 import { NextRequest, NextResponse } from 'next/server';
 import { Pool } from 'pg';
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
+
+interface Params {
+  params: {
+    id: string;
+  };
+}
+
 
 export async function GET(request: NextRequest, { params }: Params) {
   const { id } = params;
@@ -28,5 +33,6 @@ export async function GET(request: NextRequest, { params }: Params) {
   } catch (err) {
     const error = err as Error;
     console.error(`Error fetching poll: ${error.message}`); // Logging
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
