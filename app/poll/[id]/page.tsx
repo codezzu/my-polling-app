@@ -22,7 +22,7 @@ interface Vote {
 
 export default function PollDetail() {
   const params = useParams();
-  const id = params?.id; // Destructure id from params
+  const id = params?.id;
   const [poll, setPoll] = useState<Poll | null>(null);
   const [options, setOptions] = useState<Option[]>([]);
   const [votes, setVotes] = useState<Vote[]>([]);
@@ -108,7 +108,7 @@ export default function PollDetail() {
             </div>
           </>
         ) : (
-          <p>Anket yok knk.</p>
+          <p>Poll not found.</p>
         )}
       </div>
     </div>
